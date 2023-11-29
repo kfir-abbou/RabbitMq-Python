@@ -20,7 +20,7 @@ def callback(ch, method, properties, body):
             # print('Get position request')
             positionJson = json.dumps(
                 position.__dict__, cls=CatheterPositionEncoder)
-            send_message_(positionJson, 'reply', 'CatheterPosition')
+            send_message_(ch, positionJson, 'reply', 'CatheterPosition')
         elif cmd == 2:  # RESET_CATHETER_POSITION
             position.reset_position()
             pass
@@ -30,14 +30,14 @@ def callback(ch, method, properties, body):
     # elif :
 
 
-def receive_messages(channels):
+def receive_messages(channels_data, channel):
     connection_params = pika.ConnectionParameters('localhost')
     connection = pika.BlockingConnection(connection_params)
 
     channel = connection.channel()
     # exchange_name = 'pythonConsumer'
 
-    for channel_data in channels:
+    for channel_data in channels_data:
         exchange_name = channel_data[1]
         binding_key = channel_data[0]
 

@@ -6,11 +6,19 @@ from Models.Address import AddressData, AddressDataEncoder
 from Models.Person import Person
 
 
-def send_message_(message, exchange, routing_key):
+def init_connection():
     connection = pika.BlockingConnection(
         pika.ConnectionParameters(host='localhost'))
-    exchange_name = exchange
     channel = connection.channel()
+
+    return channel
+
+
+def send_message_(channel, message, exchange, routing_key):
+    # connection = pika.BlockingConnection(
+    #     pika.ConnectionParameters(host='localhost'))
+    # channel = connection.channel()
+    exchange_name = exchange
     channel.exchange_declare(exchange=exchange_name, exchange_type='topic')
 
     channel.basic_publish(
@@ -25,7 +33,7 @@ def send_message_(message, exchange, routing_key):
 
     print(f" [x] Sent '{message}' with routing key '{routing_key}'")
 
-    connection.close()
+    # connection.close()
 
 
 def send_message(message, routing_key):

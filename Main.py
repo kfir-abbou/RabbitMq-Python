@@ -1,5 +1,6 @@
 from Consumer import receive_messages
 from Models.CatheterPosition import CatheterPosition
+from Producer import init_connection
 
 
 msg_channels_data = []
@@ -13,6 +14,7 @@ msg_channels_data.append(get_position)
 msg_channels_data.append(reset_position)
 msg_channels_data.append(position_reply)
 
-receive_messages(msg_channels_data)
+channel = init_connection()
+receive_messages(msg_channels_data, channel)
 # receive_messages("MoveCatheter", "request")
 print('kfir')
